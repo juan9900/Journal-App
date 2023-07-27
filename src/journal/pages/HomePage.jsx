@@ -1,22 +1,35 @@
-import { useNavigate } from "react-router-dom";
-import Button from "@mui/material/Button";
-import MailOutline from "@mui/icons-material/MailOutline";
+import { IconButton } from "@mui/material";
+import { JournalLayout } from "../layout/JournalLayout";
+import { NoteView, NothingSelectedView } from "../views";
+import AddOutlined from "@mui/icons-material/AddOutlined";
 export const HomePage = () => {
-  const navigate = useNavigate();
-  const btnNavigateLogin = () => {
-    navigate("/auth/login");
-  };
-
-  const btnNavigateRegister = () => {
-    navigate("/auth/register");
-  };
   return (
-    <>
-      <div>HomePage</div>
-      <MailOutline />
-      <button onClick={btnNavigateLogin}> Go to Login Page</button>
-      <button onClick={btnNavigateRegister}> Go to Register Page</button>
-      <Button variant="contained">Hello World</Button>
-    </>
+    <JournalLayout>
+      {/* <Typography>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae
+        nesciunt enim quae, reiciendis, nulla expedita voluptas fugiat eos dolor
+        assumenda quo rerum sapiente quos accusamus porro culpa? Nisi, maiores
+        explicabo. Lorem ipsum dolor sit amet consectetur adipisicing elit.
+        Esse, officia laudantium. Esse vitae provident, itaque similique earum
+        fuga numquam aperiam perferendis odit voluptatem. Nostrum, itaque ab
+        pariatur voluptatibus veniam nesciunt?
+      </Typography> */}
+      <NothingSelectedView />
+      {/* <NoteView /> */}
+
+      <IconButton
+        size="large"
+        sx={{
+          color: "white",
+          backgroundColor: "error.main",
+          ":hover": { backgroundColor: "error.darker", opacity: 0.9 },
+          position: "fixed",
+          right: 50,
+          bottom: 50,
+        }}
+      >
+        <AddOutlined sx={{ fontSize: 30 }} />
+      </IconButton>
+    </JournalLayout>
   );
 };
