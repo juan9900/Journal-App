@@ -6,7 +6,6 @@ export const AuthLayout = ({ children, formTitle = "Bienvenido" }) => {
       container
       spacing={0}
       sx={{ minHeight: "100vh", backgroundColor: "primary.main", padding: "4" }}
-      lg={12}
     >
       <Grid
         item

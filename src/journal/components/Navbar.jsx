@@ -4,7 +4,7 @@ import MenuOutlined from "@mui/icons-material/MenuOutlined";
 import { AppBar, Grid, IconButton, Toolbar, Typography } from "@mui/material";
 import PropTypes from "prop-types";
 
-export const Navbar = ({ drawerWidth }) => {
+export const Navbar = ({ drawerWidth, handleDrawerToggle }) => {
   return (
     <AppBar
       position="fixed"
@@ -18,6 +18,9 @@ export const Navbar = ({ drawerWidth }) => {
           edge="start"
           color="inherit"
           sx={{ display: { sm: "none" } }}
+          onClick={() => {
+            handleDrawerToggle();
+          }}
         >
           <MenuOutlined></MenuOutlined>
         </IconButton>
