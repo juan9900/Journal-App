@@ -1,15 +1,16 @@
 import { useState } from "react";
 import { AuthLayout } from "../layout/AuthLayout";
 import { Grid, TextField, Link, Button } from "@mui/material";
-import Google from "@mui/icons-material/Google";
 import { Link as RouterLink } from "react-router-dom";
 import { useForm } from "../../hooks";
+import { startCreateUserWithEmail } from "../../store/auth";
+import { useDispatch } from "react-redux";
 
 const initialFormData = {
-  displayName: "",
-  email: "",
-  password: "",
-  confirmPassword: "",
+  displayName: "Juan",
+  email: "juan@gmail.com",
+  password: "123456",
+  confirmPassword: "123456",
 };
 
 const formValidations = {
@@ -26,6 +27,8 @@ const formValidations = {
 };
 
 export const RegisterPage = () => {
+  const dispatcher = useDispatch();
+
   const [formSubmitted, setFormSubmitted] = useState(false);
   const {
     displayName,
@@ -44,6 +47,9 @@ export const RegisterPage = () => {
   const onSubmit = (e) => {
     e.preventDefault();
     setFormSubmitted(true);
+    if (!isFormValid) return;
+    console.log(["register", formState]);
+    dispatcher(startCreateUserWithEmail({ email, password, displayName }));
   };
 
   return (
