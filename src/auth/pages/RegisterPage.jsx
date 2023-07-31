@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { AuthLayout } from "../layout/AuthLayout";
 import { Grid, TextField, Link, Button } from "@mui/material";
 import Google from "@mui/icons-material/Google";
@@ -5,36 +6,46 @@ import { Link as RouterLink } from "react-router-dom";
 import { useForm } from "../../hooks";
 
 const initialFormData = {
-  displayName: "Juan Lauretta",
-  email: "Juanluislauretta@gmail.com",
-  password: "12345",
+  displayName: "",
+  email: "",
+  password: "",
+  confirmPassword: "",
 };
 
 const formValidations = {
-  email: [(value) => value.includes("@"), "El correo debe de tener una @"],
+  email: [(value) => value.includes("@"), "El correo debe de tener un @"],
   password: [
-    (value) => value.length >= 5,
+    (value) => value.length >= 6,
     "La contraseña debe tener minimo 6 caracteres",
+  ],
+  confirmPassword: [
+    (value, passwordToMatch) => value === passwordToMatch,
+    "Las contraseñas tienen que coincidir",
   ],
   displayName: [(value) => value.length >= 1, "El nombre es obligatorio"],
 };
 
 export const RegisterPage = () => {
+  const [formSubmitted, setFormSubmitted] = useState(false);
   const {
     displayName,
     email,
     password,
+    confirmPassword,
     onInputChange,
-    onResetForm,
     formState,
     displayNameValid,
     emailValid,
     passwordValid,
+    confirmPasswordValid,
+    isFormValid,
   } = useForm(initialFormData, formValidations);
+
   const onSubmit = (e) => {
     e.preventDefault();
-    console.log(formState);
+    setFormSubmitted(true);
   };
+
   return (
     <AuthLayout formTitle="Crear cuenta">
       <form onSubmit={onSubmit}>
@@ -48,7 +59,7 @@ export const RegisterPage = () => {
               value={displayName}
               name="displayName"
               onChange={onInputChange}
-              error={displayNameValid}
+              error={!!displayNameValid && formSubmitted}
               helperText={displayNameValid}
             />
           </Grid>
@@ -61,7 +72,7 @@ export const RegisterPage = () => {
               value={email}
               name="email"
               onChange={onInputChange}
-              error={emailValid}
+              error={!!emailValid && formSubmitted}
               helperText={emailValid}
             />
           </Grid>
@@ -74,14 +85,33 @@ export const RegisterPage = () => {
               value={password}
               name="password"
               onChange={onInputChange}
-              error={passwordValid}
+              error={!!passwordValid && formSubmitted}
               helperText={passwordValid}
+            />
+          </Grid>
+          <Grid item xs={12} sx={{ mt: 2 }}>
+            <TextField
+              label="Confirmar contraseña"
+              type="password"
+              placeholder="123456"
+              fullWidth
+              value={confirmPassword}
+              name="confirmPassword"
+              onChange={onInputChange}
+              error={!!confirmPasswordValid && formSubmitted}
+              helperText={confirmPasswordValid}
             />
           </Grid>
 
           <Grid container spacing={2} sx={{ mt: 1 }}>
             <Grid item xs={12}>
-              <Button type="submit" variant="contained" fullWidth>
+              <Button
+                disabled={!isFormValid && formSubmitted}
+                type="submit"
+                variant="contained"
+                fullWidth
+                onClick={onSubmit}
+              >
                 Crear cuenta
               </Button>
             </Grid>
