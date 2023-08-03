@@ -1,33 +1,40 @@
 import { useMemo } from "react";
 
 import Google from "@mui/icons-material/Google";
-import { Grid, TextField, Button, Link } from "@mui/material";
-import { Link as RouterLink } from "react-router-dom";
+import { Grid, TextField, Button, Link, Alert } from "@mui/material";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { AuthLayout } from "../layout/AuthLayout";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../store/auth/authSlice";
 import { useForm } from "../../hooks";
-import { checkingAuthentication, startGoogleSignIn } from "../../store/auth";
+import {
+  checkingAuthentication,
+  startGoogleSignIn,
+  startLoginWithEmailAndPassword,
+} from "../../store/auth";
 export const LoginPage = () => {
   const dispatcher = useDispatch();
+  const navigate = useNavigate();
 
-  const { status } = useSelector((state) => state.auth);
+  const { status, errorMessage } = useSelector((state) => state.auth);
 
   //Esto va a evalur el estado de "status" cada vez que cambie, y va a retornar un booleano, cuando sea igual sera true y cuando no, sera false
-  const isAuthenticated = useMemo(
-    () => status === "checking" || status === "authenticated",
+  const isCheckingAuthentication = useMemo(
+    () => status === "checking",
     [status]
   );
 
   const { email, password, onInputChange } = useForm({
-    email: "",
-    password: "",
+    email: "juan@gmail.com",
+    password: "123456",
   });
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
-    console.log({ email, password });
-    dispatcher(checkingAuthentication());
+    const { ok } = await dispatcher(
+      startLoginWithEmailAndPassword(email, password)
+    );
+    if (ok) return navigate("/", { replace: true });
   };
 
   const onGoogleSignIn = () => {
@@ -61,10 +68,19 @@ export const LoginPage = () => {
             />
           </Grid>
 
+          <Grid
+            item
+            xs={12}
+            sx={{ mt: 2 }}
+            display={errorMessage ? "" : "none"}
+          >
+            <Alert severity="error">{errorMessage}</Alert>
+          </Grid>
+
           <Grid container spacing={2} sx={{ mt: 1 }}>
             <Grid item xs={12} sm={6}>
               <Button
-                disabled={isAuthenticated}
+                disabled={isCheckingAuthentication}
                 variant="contained"
                 fullWidth
                 onClick={onSubmit}
@@ -75,7 +91,7 @@ export const LoginPage = () => {
             </Grid>
             <Grid item xs={12} sm={6}>
               <Button
-                disabled={isAuthenticated}
+                disabled={isCheckingAuthentication}
                 variant="contained"
                 fullWidth
                 onClick={onGoogleSignIn}

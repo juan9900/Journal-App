@@ -18,7 +18,7 @@ export const AuthLayout = ({ children, formTitle = "Bienvenido" }) => {
         }}
         xs={11}
         sm={6}
-        md={4}
+        md={6}
         lg={3}
       >
         <Typography variant="h5" sx={{ mb: 2 }}>

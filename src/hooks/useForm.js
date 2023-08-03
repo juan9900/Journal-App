@@ -33,7 +33,6 @@ export const useForm = (initialForm = {}, formValidations = {}) => {
 
       formCheckValues[`${formField}Valid`] = fn(
         formState[formField],
-
         formState.password
       )
         ? null

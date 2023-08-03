@@ -1,6 +1,7 @@
 import {
   GoogleAuthProvider,
   createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
   signInWithPopup,
   updateProfile,
 } from "firebase/auth";
@@ -54,12 +55,64 @@ export const createUserWithEmail = async ({
     };
   } catch (error) {
     console.log(error.message);
+    console.log(error.code);
     const errorCode = error.code;
-    const errorMessage = error.message;
+    let errorMessage = "";
+    switch (error.code) {
+      case "auth/email-already-in-use":
+        errorMessage = "El correo ya se encuentra registrado.";
+        break;
+
+      default:
+        errorMessage = error.message;
+        break;
+    }
     return {
       ok: false,
       errorCode,
       errorMessage,
+    };
+  }
+};
+
+export const loginUserWithEmail = async (email, password) => {
+  try {
+    console.log(email);
+    console.log(password);
+    const resp = await signInWithEmailAndPassword(
+      firebaseAuth,
+      email,
+      password
+    );
+
+    const { displayName, uid, photoURL } = resp.user;
+
+    return {
+      ok: true,
+      email,
+      displayName,
+      uid,
+      photoURL,
+    };
+  } catch (error) {
+    let errorMessage = "An unexpected error occurred. Please try again.";
+    switch (error.code) {
+      case "auth/wrong-password":
+        errorMessage =
+          "The password or email address you entered is incorrect. Please try again.";
+        break;
+
+      case "auth/user-not-found":
+        errorMessage =
+          "The password or email address you entered is incorrect. Please try again.";
+        break;
+
+      default:
+        break;
+    }
+    return {
+      ok: false,
+      errorMessage: errorMessage,
     };
   }
 };

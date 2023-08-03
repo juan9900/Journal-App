@@ -1,8 +1,16 @@
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
 import { IconButton } from "@mui/material";
 import { JournalLayout } from "../layout/JournalLayout";
 import { NoteView, NothingSelectedView } from "../views";
 import AddOutlined from "@mui/icons-material/AddOutlined";
+import { useNavigate } from "react-router-dom";
 export const HomePage = () => {
+  const { uid } = useSelector((state) => state.auth);
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (uid === null) return navigate("/auth/login");
+  }, []);
   return (
     <JournalLayout>
       {/* <Typography>
