@@ -4,9 +4,14 @@ import "./styles.css";
 import { JournalApp } from "./JournalApp";
 import { Provider } from "react-redux";
 import { store } from "./store";
+import { BrowserRouter } from "react-router-dom";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <Provider store={store}>
-    <JournalApp />
-  </Provider>
+  <React.StrictMode>
+    <Provider store={store}>
+      <BrowserRouter>
+        <JournalApp />
+      </BrowserRouter>
+    </Provider>
+  </React.StrictMode>
 );

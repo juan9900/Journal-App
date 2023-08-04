@@ -25,8 +25,8 @@ export const LoginPage = () => {
   );
 
   const { email, password, onInputChange } = useForm({
-    email: "juan@gmail.com",
-    password: "123456",
+    email: "",
+    password: "",
   });
 
   const onSubmit = async (e) => {

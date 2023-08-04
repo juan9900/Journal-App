@@ -20,7 +20,10 @@ export const JournalLayout = ({ children }) => {
         openDrawer={openDrawer}
         handleDrawerToggle={handleDrawerToggle}
       />
-      <Box sx={{ flexGrow: 1, p: 3 }} component="main">
+      <Box
+        sx={{ flexGrow: 1, p: 3, marginLeft: `${drawerWidth}px` }}
+        component="main"
+      >
         <Toolbar />
         {/* Este toolbar solo sirve para que el texto de main aparezca debajo del toolbar de navegacion, si no se coloca, el texto de main se esconderia detras del toolbar de navegacion
          */}
