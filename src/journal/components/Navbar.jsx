@@ -3,6 +3,10 @@ import MenuOutlined from "@mui/icons-material/MenuOutlined";
 
 import { AppBar, Grid, IconButton, Toolbar, Typography } from "@mui/material";
 import PropTypes from "prop-types";
+import { signOut } from "firebase/auth";
+import { firebaseAuth } from "../../firebase/config";
+import { useDispatch } from "react-redux";
+import { signOutUser } from "../../firebase/providers";
 
 export const Navbar = ({ drawerWidth, handleDrawerToggle }) => {
   return (
@@ -34,7 +38,7 @@ export const Navbar = ({ drawerWidth, handleDrawerToggle }) => {
             {" "}
             Journal App
           </Typography>
-          <IconButton color="inherit">
+          <IconButton onClick={signOutUser} color="inherit">
             <LogoutOutlined />
           </IconButton>
         </Grid>

@@ -2,6 +2,7 @@ import {
   createUserWithEmail,
   loginUserWithEmail,
   signInWithGoogle,
+  signOutUser,
 } from "../../firebase/providers";
 import { checkingCredentials, logout } from "./";
 import { login } from "./";

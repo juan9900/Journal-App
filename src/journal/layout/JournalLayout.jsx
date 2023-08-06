@@ -21,7 +21,7 @@ export const JournalLayout = ({ children }) => {
         handleDrawerToggle={handleDrawerToggle}
       />
       <Box
-        sx={{ flexGrow: 1, p: 3, marginLeft: `${drawerWidth}px` }}
+        sx={{ flexGrow: 1, p: 3, marginLeft: { sm: `${drawerWidth}px` } }}
         component="main"
       >
         <Toolbar />
