@@ -62,9 +62,12 @@ export const createUserWithEmail = async ({
       case "auth/email-already-in-use":
         errorMessage = "El correo ya se encuentra registrado.";
         break;
+      case "auth/invalid-email":
+        errorMessage = "El correo ingresado no es válido.";
+        break;
 
       default:
-        errorMessage = error.message;
+        errorMessage = `Error code: ${error.code}`;
         break;
     }
     return {

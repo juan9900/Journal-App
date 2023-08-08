@@ -9,7 +9,7 @@ export const AuthLayout = ({ children, formTitle = "Bienvenido" }) => {
     >
       <Grid
         item
-        className="box-shadow"
+        className="box-shadow "
         sx={{
           backgroundColor: "white",
           padding: 3,

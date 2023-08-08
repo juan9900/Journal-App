@@ -1,12 +1,20 @@
 import { useEffect, useMemo } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { IconButton } from "@mui/material";
 import { JournalLayout } from "../layout/JournalLayout";
 import { NoteView, NothingSelectedView } from "../views";
 import AddOutlined from "@mui/icons-material/AddOutlined";
 import { useNavigate } from "react-router-dom";
 import { useCheckAuth } from "../../hooks/useCheckAuth";
+import { startCreateNewNote } from "../../store/journal/thunks";
 export const HomePage = () => {
+  const dispatch = useDispatch();
+  const onClickNewNote = () => {
+    dispatch(startCreateNewNote());
+  };
+  const { isSaving, active } = useSelector((state) => state.journal);
+
+  const isSavingNote = useMemo(() => isSaving === true, [isSaving]);
   return (
     <JournalLayout>
       {/* <Typography>
@@ -18,10 +26,12 @@ export const HomePage = () => {
         fuga numquam aperiam perferendis odit voluptatem. Nostrum, itaque ab
         pariatur voluptatibus veniam nesciunt?
       </Typography> */}
-      <NothingSelectedView />
-      {/* <NoteView /> */}
+
+      {!!active ? <NoteView /> : <NothingSelectedView />}
 
       <IconButton
+        disabled={isSavingNote}
+        onClick={onClickNewNote}
         size="large"
         sx={{
           color: "white",

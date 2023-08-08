@@ -1,5 +1,4 @@
-import { useSelector } from "react-redux";
-import { TurnedInNot } from "@mui/icons-material";
+import { useDispatch, useSelector } from "react-redux";
 import {
   Box,
   Drawer,
@@ -14,9 +13,13 @@ import {
   ListItemText,
 } from "@mui/material";
 import PropTypes from "prop-types";
+import { SidebarItem } from "./SidebarItem";
+import { setActiveNote } from "../../store/journal";
 
 export const Sidebar = ({ drawerWidth, openDrawer, handleDrawerToggle }) => {
   const { displayName } = useSelector((state) => state.auth);
+  const { notes } = useSelector((state) => state.journal);
+  const dispatcher = useDispatch();
 
   const drawer = (
     <div>
@@ -28,19 +31,13 @@ export const Sidebar = ({ drawerWidth, openDrawer, handleDrawerToggle }) => {
       <Divider />
 
       <List>
-        {["Enero", "Marzo", "Abril"].map((text) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                <TurnedInNot />
-              </ListItemIcon>
-              <Grid container>
-                <ListItemText primary={text} />
-                <ListItemText secondary="lorem ipsum soneer citrum aleg" />
-              </Grid>
-            </ListItemButton>
+        {notes.length > 0 ? (
+          notes.map((note) => <SidebarItem key={note.id} {...note} />)
+        ) : (
+          <ListItem key="not-found">
+            <ListItemText primary="Aún no has creado ninguna nota..." />
           </ListItem>
-        ))}
+        )}
       </List>
     </div>
   );

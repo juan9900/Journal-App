@@ -14,10 +14,10 @@ import { useForm } from "../../hooks";
 import { startCreateUserWithEmail } from "../../store/auth";
 
 const initialFormData = {
-  displayName: "Juan",
-  email: "juan@gmail.com",
-  password: "123456",
-  confirmPassword: "123456",
+  displayName: "",
+  email: "",
+  password: "",
+  confirmPassword: "",
 };
 
 const formValidations = {
@@ -73,7 +73,10 @@ export const RegisterPage = () => {
 
   return (
     <AuthLayout formTitle="Crear cuenta">
-      <form onSubmit={onSubmit}>
+      <form
+        onSubmit={onSubmit}
+        className="animate__animated animate__fadeIn animate__faster"
+      >
         <Grid container>
           <Grid item xs={12}>
             <TextField

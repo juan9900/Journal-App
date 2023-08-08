@@ -7,6 +7,7 @@ export const NothingSelectedView = () => {
       direction="column"
       justifyContent="center"
       alignItems="center"
+      className="animate__animated animate__fadeIn animate__faster"
       sx={{
         minHeight: "calc(100vh - 115px)",
         backgroundColor: "rgba(0,0,70,0.1)",

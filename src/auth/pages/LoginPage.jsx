@@ -12,6 +12,11 @@ import {
   startGoogleSignIn,
   startLoginWithEmailAndPassword,
 } from "../../store/auth";
+
+const formData = {
+  email: "",
+  password: "",
+};
 export const LoginPage = () => {
   const dispatcher = useDispatch();
   const navigate = useNavigate();
@@ -24,17 +29,11 @@ export const LoginPage = () => {
     [status]
   );
 
-  const { email, password, onInputChange } = useForm({
-    email: "",
-    password: "",
-  });
+  const { email, password, onInputChange } = useForm(formData);
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    const { ok } = await dispatcher(
-      startLoginWithEmailAndPassword(email, password)
-    );
-    if (ok) return navigate("/", { replace: true });
+    dispatcher(startLoginWithEmailAndPassword(email, password));
   };
 
   const onGoogleSignIn = () => {
@@ -43,7 +42,10 @@ export const LoginPage = () => {
   };
   return (
     <AuthLayout formTitle="Iniciar Sesión">
-      <form onSubmit={onSubmit}>
+      <form
+        onSubmit={onSubmit}
+        className="animate__animated animate__fadeIn animate__faster"
+      >
         <Grid container>
           <Grid item xs={12}>
             <TextField

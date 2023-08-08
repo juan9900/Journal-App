@@ -4,6 +4,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { firebaseAuth } from "../firebase/config";
 import { logout, login } from "../store/auth";
 import { useNavigate } from "react-router-dom";
+import { startLoadingUserNotes } from "../store/journal/thunks";
 
 export const useCheckAuth = () => {
   const dispatch = useDispatch();
@@ -13,12 +14,12 @@ export const useCheckAuth = () => {
   useEffect(() => {
     onAuthStateChanged(firebaseAuth, async (user) => {
       if (!user) {
-        navigate("/auth/login", { replace: true });
         dispatch(logout());
         return;
       }
       const { uid, displayName, email, photoURL } = user;
       dispatch(login({ uid, displayName, email, photoURL }));
+      dispatch(startLoadingUserNotes());
     });
   }, []);
 
