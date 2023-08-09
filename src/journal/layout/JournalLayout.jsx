@@ -1,7 +1,18 @@
-import { Box, Toolbar } from "@mui/material";
+import { useState, useMemo, useEffect } from "react";
+
+import {
+  Box,
+  Toolbar,
+  Button,
+  Snackbar,
+  IconButton,
+  Alert,
+} from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
+
 import PropTypes from "prop-types";
 import { Navbar, Sidebar } from "../components";
-import { useState } from "react";
+import { useSelector } from "react-redux";
 
 export const JournalLayout = ({ children }) => {
   const drawerWidth = 250;
@@ -9,6 +20,37 @@ export const JournalLayout = ({ children }) => {
   const handleDrawerToggle = () => {
     setOpenDrawer((state) => !state);
   };
+
+  const { messageSaved } = useSelector((state) => state.journal);
+
+  const [showSnackbar, setShowSnackbar] = useState(false);
+
+  useEffect(() => {
+    setShowSnackbar(messageSaved.includes("actualizada"));
+  }, [messageSaved]);
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setShowSnackbar(false);
+  };
+  const snackBarAction = (
+    <>
+      <Button color="secondary" size="small" onClick={handleClose}>
+        UNDO
+      </Button>
+      <IconButton
+        size="small"
+        aria-label="close"
+        color="inherit"
+        onClick={handleClose}
+      >
+        <CloseIcon fontSize="small" />
+      </IconButton>
+    </>
+  );
   return (
     <Box
       sx={{ display: "flex" }}
@@ -32,6 +74,16 @@ export const JournalLayout = ({ children }) => {
          */}
         {children}
       </Box>
+      <Snackbar
+        open={showSnackbar}
+        autoHideDuration={3000}
+        onClose={handleClose}
+        action={snackBarAction}
+      >
+        <Alert onClose={handleClose} severity="success" sx={{ width: "100%" }}>
+          Nota guardada con éxito!
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };

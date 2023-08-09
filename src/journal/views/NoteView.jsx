@@ -1,9 +1,16 @@
 import { SaveOutlined } from "@mui/icons-material";
-import { Button, Grid, TextField, Typography } from "@mui/material";
+import {
+  Button,
+  Grid,
+  TextField,
+  Typography,
+  Snackbar,
+  IconButton,
+} from "@mui/material";
 import { ImageGallery } from "../components/ImageGallery";
 import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "../../hooks";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { setActiveNote } from "../../store/journal";
 import { startUpdateNote } from "../../store/journal/thunks";
 
@@ -38,6 +45,7 @@ export const NoteView = () => {
       <Typography fontSize={39} fontWeight="light">
         {dateString}
       </Typography>
+
       <Grid item>
         <Button onClick={onSaveNote} color="primary" sx={{ p: 2 }}>
           <SaveOutlined sx={{ fontSize: 30, mr: 1 }} />
