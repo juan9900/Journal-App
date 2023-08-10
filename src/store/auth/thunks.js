@@ -9,7 +9,6 @@ import { login } from "./";
 
 export const checkingAuthentication = () => {
   return async (dispatch) => {
-    console.log("dispatching credentials");
     dispatch(checkingCredentials());
   };
 };
@@ -19,7 +18,6 @@ export const startGoogleSignIn = () => {
     dispatch(checkingAuthentication());
     const result = await signInWithGoogle();
     if (!result.ok) return dispatch(logout(result.errorMessage));
-    console.log(result);
     dispatch(login(result));
   };
 };

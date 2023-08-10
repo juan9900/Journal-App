@@ -19,7 +19,6 @@ const formData = {
 };
 export const LoginPage = () => {
   const dispatcher = useDispatch();
-  const navigate = useNavigate();
 
   const { status, errorMessage } = useSelector((state) => state.auth);
 
@@ -37,7 +36,6 @@ export const LoginPage = () => {
   };
 
   const onGoogleSignIn = () => {
-    console.log("on google sing in");
     dispatcher(startGoogleSignIn());
   };
   return (

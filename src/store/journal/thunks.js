@@ -1,5 +1,10 @@
-import { useSelector } from "react-redux";
-import { collection, addDoc, setDoc, doc, updateDoc } from "firebase/firestore";
+import {
+  collection,
+  addDoc,
+  doc,
+  updateDoc,
+  deleteDoc,
+} from "firebase/firestore";
 import { firebaseDB } from "../../firebase/config";
 import {
   addNewEmptyNote,
@@ -8,19 +13,22 @@ import {
   setNotes,
   setSaving,
   updateNote,
+  setErrorMessage,
+  setImagesUrls,
+  deleteNoteById,
 } from "./journalSlice";
-import { loadNotes } from "../../helpers";
+import { fileUpload, loadNotes } from "../../helpers";
 
 export const startCreateNewNote = () => {
   return async (dispatch, getState) => {
     dispatch(savingNewNote());
 
     const { uid } = getState().auth;
-    console.log("start new note");
     const newNote = {
       title: "",
       body: "",
       date: new Date().getTime(),
+      imageUrls: [],
     };
 
     try {
@@ -29,7 +37,6 @@ export const startCreateNewNote = () => {
         newNote
       );
       newNote.id = newDoc.id;
-      console.log("document created");
     } catch (error) {
       console.log(error);
     }
@@ -42,7 +49,7 @@ export const startCreateNewNote = () => {
 export const startLoadingUserNotes = () => {
   return async (dispatch, getState) => {
     const { uid } = getState().auth;
-    if (!uid) throw new Exception("El usuario no existe");
+    if (!uid) throw new Error("El usuario no existe");
     const notes = await loadNotes(uid);
     dispatch(setNotes(notes));
   };
@@ -58,10 +65,39 @@ export const startUpdateNote = () => {
       dispatch(setSaving());
       const docRef = doc(firebaseDB, `/${uid}/journal/notes/${note.id}`);
       await updateDoc(docRef, noteToFirestore);
-      console.log("Document written with ID: ", docRef.id);
       dispatch(updateNote(note));
     } catch (e) {
+      dispatch(setErrorMessage("No se pudo guardar la nota."));
       console.error("Error updating document: ", e);
+    }
+  };
+};
+
+export const startUploadingFiles = (files = []) => {
+  return async (dispatch) => {
+    dispatch(setSaving());
+    const fileUploadPromises = [];
+    for (const file of files) {
+      fileUploadPromises.push(fileUpload(file));
+    }
+
+    const photosUrls = await Promise.all(fileUploadPromises);
+    dispatch(setImagesUrls(photosUrls));
+  };
+};
+
+export const startDeleteNote = () => {
+  return async (dispatch, getState) => {
+    const { uid } = getState().auth;
+    const { id } = getState().journal.active;
+    try {
+      console.log("deleting");
+      const res = await deleteDoc(
+        doc(firebaseDB, `/${uid}/journal/notes/${id}`)
+      );
+      dispatch(deleteNoteById(id));
+    } catch (error) {
+      console.log(error);
     }
   };
 };

@@ -119,6 +119,5 @@ export const loginUserWithEmail = async (email, password) => {
 };
 
 export const signOutUser = async () => {
-  console.log(firebaseAuth);
   return await firebaseAuth.signOut();
 };

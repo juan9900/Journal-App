@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 
 import {
   Box,
@@ -10,7 +10,6 @@ import {
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 
-import PropTypes from "prop-types";
 import { Navbar, Sidebar } from "../components";
 import { useSelector } from "react-redux";
 
@@ -21,13 +20,15 @@ export const JournalLayout = ({ children }) => {
     setOpenDrawer((state) => !state);
   };
 
-  const { messageSaved } = useSelector((state) => state.journal);
+  const { messageSaved, errorMessage } = useSelector((state) => state.journal);
 
   const [showSnackbar, setShowSnackbar] = useState(false);
 
   useEffect(() => {
-    setShowSnackbar(messageSaved.includes("actualizada"));
-  }, [messageSaved]);
+    setShowSnackbar(messageSaved !== null || errorMessage !== null);
+  }, [errorMessage, messageSaved]);
+
+  const snackBarMessage = useMemo(() => messageSaved || errorMessage);
 
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -80,8 +81,12 @@ export const JournalLayout = ({ children }) => {
         onClose={handleClose}
         action={snackBarAction}
       >
-        <Alert onClose={handleClose} severity="success" sx={{ width: "100%" }}>
-          Nota guardada con éxito!
+        <Alert
+          onClose={handleClose}
+          severity={messageSaved ? "success" : "error"}
+          sx={{ width: "100%" }}
+        >
+          {snackBarMessage}
         </Alert>
       </Snackbar>
     </Box>
