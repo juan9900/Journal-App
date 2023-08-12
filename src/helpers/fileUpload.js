@@ -1,5 +1,5 @@
 export const fileUpload = async (file) => {
-  if (!file) throw new Error("No se seleccionó ningún archivo");
+  if (!file) return null;
 
   const CLOUD_URL = "https://api.cloudinary.com/v1_1/do8t1qxve/image/upload";
 
@@ -16,6 +16,7 @@ export const fileUpload = async (file) => {
 
     return cloudResp.secure_url;
   } catch (error) {
-    throw new Error("Ocurrió un error durante la subida del archivo.");
+    // throw new Error("Ocurrió un error durante la subida del archivo.");
+    return null;
   }
 };
